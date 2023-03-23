@@ -1,13 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import heatmap from "@mars3d/heatmap.js";
 
-interface DrawHeatMapProps {
-  windowX: number;
-  windowY: number;
-}
-
-const DrawHeatMap: React.FC<DrawHeatMapProps> = ({ windowX, windowY }) => {
+const DrawHeatMap = () => {
   const heatmapContainerRef = useRef<HTMLDivElement>(null);
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
   useEffect(() => {
     const heatmapInstance = heatmap.create({
       // @ts-ignore
@@ -15,8 +13,6 @@ const DrawHeatMap: React.FC<DrawHeatMapProps> = ({ windowX, windowY }) => {
     });
     const points = [];
     const max = 1;
-    const width = windowX;
-    const height = windowY;
     let len = 100;
 
     while (len--) {
@@ -31,11 +27,11 @@ const DrawHeatMap: React.FC<DrawHeatMapProps> = ({ windowX, windowY }) => {
       max: max,
       data: points
     };
-    console.log(data, windowX, windowY);
+      console.log(data, width, height);
+
     // @ts-ignore
     heatmapInstance.setData(data);
   })
-
   return (
         <div
             ref={heatmapContainerRef}
@@ -43,8 +39,8 @@ const DrawHeatMap: React.FC<DrawHeatMapProps> = ({ windowX, windowY }) => {
               position: 'absolute',
               top: 0,
               left: 0,
-              width: `${window.innerWidth}px`,
-              height: `${window.innerHeight}px`,
+              width: `${width}px`,
+              height: `${height}px`,
               pointerEvents: 'none'
         }}
         />
