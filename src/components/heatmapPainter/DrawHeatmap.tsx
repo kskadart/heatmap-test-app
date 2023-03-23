@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import h337 from "@mars3d/heatmap.js";
+import heatmap from "@mars3d/heatmap.js";
 
 interface DrawHeatMapProps {
   windowX: number;
@@ -7,21 +7,17 @@ interface DrawHeatMapProps {
 }
 
 const DrawHeatMap: React.FC<DrawHeatMapProps> = ({ windowX, windowY }) => {
-  const heatmapContainerRef = useRef<HTMLCanvasElement>(null);
-
+  const heatmapContainerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const heatmapInstance = h337.create({
+    const heatmapInstance = heatmap.create({
       // @ts-ignore
-      container: document.querySelector('.App')
-      // TODO(ada): the heatmap doesn't work with <heatmapContainerRef.current>.
-      //  It works if use querySelector <Element> and set className for the element that INCLUDE this module?
-      // container: heatmapContainerRef.current,
+      container: heatmapContainerRef.current,
     });
     const points = [];
     const max = 1;
     const width = windowX;
     const height = windowY;
-    let len = 250;
+    let len = 100;
 
     while (len--) {
       let point = {
@@ -41,11 +37,16 @@ const DrawHeatMap: React.FC<DrawHeatMapProps> = ({ windowX, windowY }) => {
   })
 
   return (
-        <canvas
+        <div
             ref={heatmapContainerRef}
-            // style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none'}}
-            width={windowX}
-            height={windowY}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: `${window.innerWidth}px`,
+              height: `${window.innerHeight}px`,
+              pointerEvents: 'none'
+        }}
         />
   );
 };
